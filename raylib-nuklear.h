@@ -42,8 +42,8 @@
 
 #include "nuklear.h"
 
-NK_API struct nk_context* InitNuklear(int fontSize);
-NK_API void DumpNuklear(struct nk_context * ctx);
+struct nk_context* InitNuklear(int fontSize);
+void DumpNuklear(struct nk_context * ctx);
 
 #endif  // RAYLIB_NUKLEAR_H
 
@@ -71,8 +71,7 @@ NK_API void DumpNuklear(struct nk_context * ctx);
 #include <stdio.h>
 #include <string.h>
 
-NK_API float
-nk_raylib_font_get_text_width(nk_handle handle, float height, const char *text, int len)
+float nk_raylib_font_get_text_width(nk_handle handle, float height, const char *text, int len)
 {
     NK_UNUSED(handle);
     if (len <= 0) {
@@ -82,17 +81,22 @@ nk_raylib_font_get_text_width(nk_handle handle, float height, const char *text, 
     return len * height / 2; // MOCK
 }
 
-NK_API struct nk_context*
-InitNuklear(int fontSize)
+void* malloc_undefined(size_t len) {
+    void* data = malloc(len);
+    memset(data, 0xaa, len);
+    return data;
+}
+
+struct nk_context* InitNuklear(int fontSize)
 {
     if (fontSize <= 0) fontSize = 20;
 
     // User font.
-    struct nk_user_font* userFont = malloc(sizeof(struct nk_user_font));
+    struct nk_user_font* userFont = malloc_undefined(sizeof(struct nk_user_font));
     userFont->height = (float)fontSize;
     userFont->width = nk_raylib_font_get_text_width;
 
-    struct nk_context* ctx = malloc(sizeof(struct nk_context));
+    struct nk_context* ctx = malloc_undefined(sizeof(struct nk_context));
 
     // Create the nuklear environment.
     if (nk_init_default(ctx, userFont) == 0) {
@@ -103,8 +107,7 @@ InitNuklear(int fontSize)
     return ctx;
 }
 
-NK_API void
-DumpNuklear(struct nk_context * ctx)
+void DumpNuklear(struct nk_context * ctx)
 {
     printf("Commands: ");
     const struct nk_command *cmd;

@@ -1,6 +1,6 @@
 BINARIES = example-c example-zig example-c-zig-linked
 CC = gcc
-CFLAGS = -I.
+CFLAGS = -I. -g
 
 default_target: $(BINARIES)
 .PHONY : default_target, clean
@@ -21,7 +21,7 @@ example-c-zig-linked: raylib-nuklear.o example-c.o
 	zig cc $(CFLAGS) example-c.o raylib-nuklear.o -o example-c-zig-linked
 
 example-zig: example.zig raylib-nuklear.o
-	zig build-exe $(CFLAGS) -lc example.zig raylib-nuklear.o -femit-bin=example-zig
+	zig build-exe -I. -lc example.zig raylib-nuklear.o -femit-bin=example-zig
 
 example-zig.o: example.zig
-	zig build-obj $(CFLAGS) -lc example.zig raylib-nuklear.o -femit-bin=example-zig.o
+	zig build-obj -I. -lc example.zig raylib-nuklear.o -femit-bin=example-zig.o
