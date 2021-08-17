@@ -1,8 +1,6 @@
-# remember to download libraylib.so at https://github.com/raysan5/raylib/releases
-
 BINARIES = example-c example-zig example-c-zig-linked
 CC = gcc
-CFLAGS = -I. -lraylib -L.
+CFLAGS = -I.
 
 default_target: $(BINARIES)
 .PHONY : default_target, clean
