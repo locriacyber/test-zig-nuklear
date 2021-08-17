@@ -51,6 +51,7 @@ extern "C" {
 NK_API struct nk_context* InitNuklear(int fontSize);
 NK_API struct nk_context* InitNuklearEx(Font font, float fontSize);
 NK_API void UpdateNuklear(struct nk_context * ctx);
+NK_API void DumpNuklear(struct nk_context * ctx);
 NK_API void DrawNuklear(struct nk_context * ctx);
 NK_API void UnloadNuklear(struct nk_context * ctx);
 NK_API struct nk_color ColorToNuklear(Color color);
@@ -218,6 +219,17 @@ InitNuklear(int fontSize)
 
     // Nuklear context.
     return InitNuklearContext(userFont);
+}
+
+NK_API void
+DumpNuklear(struct nk_context * ctx)
+{
+    printf("Commands: ");
+    const struct nk_command *cmd;
+    nk_foreach(cmd, ctx) {
+        printf("%d, ", cmd->type);
+    }
+    printf("\n");
 }
 
 /**
